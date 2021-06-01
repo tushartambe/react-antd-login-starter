@@ -17,7 +17,7 @@ const ProfileActions = (props) => {
     history.push("/login");
 
     notification.success({
-      message: 'iStocks',
+      message: 'React Login Starter',
       description: "You've successfully logged out.",
     });
   }

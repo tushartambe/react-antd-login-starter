@@ -1,6 +1,6 @@
-import { LockTwoTone, MailTwoTone } from "@ant-design/icons";
-import { Button, Form, Input, Layout, notification, Typography } from "antd";
-import React, { useState } from 'react';
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import { Button, Form, Input, notification, Typography } from "antd";
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { login } from "../apis/authentication";
 import UnAuthCustomLayout from '../components/layout/UnAuthCustomLayout';
@@ -8,37 +8,25 @@ import { JWT_TOKEN } from '../constants/constants';
 const { Title } = Typography;
 
 const Login = (props) => {
-  const [email, setLocalEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-    const loginRequest = {
-      "email": email,
-      "password": password
-    };
-
-    login(loginRequest)
+  const onFinish = (values) => {
+    login(values)
       .then(response => {
         localStorage.setItem(JWT_TOKEN, response.jwtToken);
         notification.success({
-          message: 'iStocks',
+          message: 'React Login Starter',
           description: "You're successfully logged in.",
         });
         props.history.push("/");
       }).catch(error => {
-        if (error.status === 401) {
-          notification.error({
-            message: 'iStocks',
-            description: 'Your Username or Password is incorrect. Please try again!'
-          });
-        } else {
-          notification.error({
-            message: 'iStocks',
-            description: error.message || 'Sorry! Something went wrong. Please try again!'
-          });
-        }
+        notification.error({
+          message: 'React Login Starter',
+          description: 'Your Username or Password is incorrect. Please try again!'
+        });
       });
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
   };
 
   return (
@@ -47,9 +35,8 @@ const Login = (props) => {
       <Form
         name="normal_login"
         className="login-form"
-        initialValues={{
-          remember: true,
-        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
       >
         <Form.Item
           name="email"
@@ -63,9 +50,9 @@ const Login = (props) => {
           hasFeedback
         >
           <Input
-            prefix={<MailTwoTone className="site-form-item-icon" />}
+
+            prefix={<MailOutlined className="site-form-item-icon" />}
             placeholder="yourmail@domain.com"
-            onChange={(e) => setLocalEmail(e.target.value)}
           />
         </Form.Item>
         <Form.Item
@@ -78,17 +65,16 @@ const Login = (props) => {
           ]}
         >
           <Input.Password
-            prefix={<LockTwoTone className="site-form-item-icon" />}
+            prefix={<LockOutlined className="site-form-item-icon" />}
             placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Item>
 
         <Form.Item>
-          <Button type={"primary"} onClick={onSubmit} block>
+          <Button type={"primary"} htmlType="submit" block>
             Log In
-              </Button>
-              Don't have an account?<Link to="/register"> Create One</Link>
+          </Button>
+          Don't have an account?<Link to="/register"> Create One</Link>
         </Form.Item>
       </Form>
     </UnAuthCustomLayout>

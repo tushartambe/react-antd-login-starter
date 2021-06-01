@@ -23,13 +23,13 @@ const Register = (props) => {
     register(registerRequest)
       .then(response => {
         notification.success({
-          message: 'iStocks',
+          message: 'React Login Starter',
           description: "Thank you! You're successfully registered. Please Login to continue!",
         });
         props.history.push("/login");
       }).catch(error => {
         notification.error({
-          message: 'iStocks',
+          message: 'React Login Starter',
           description: error.message || 'Sorry! Something went wrong. Please try again!'
         });
       });

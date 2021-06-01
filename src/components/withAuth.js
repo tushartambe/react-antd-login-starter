@@ -13,7 +13,7 @@ const withAuth = (ComponentToProtect) => {
         setLoading(false);
       }).catch(error => {
         notification.error({
-          message: 'iStocks',
+          message: 'React Login Starter',
           description: 'Session Invalid. Please login again.'
         });
         setLoading(false);
