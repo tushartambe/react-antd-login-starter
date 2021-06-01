@@ -1,5 +1,13 @@
 ### React Login Starter App
 
+#### Run this locally : 
+```bash
+git clone https://github.com/tushartambe/react-antd-login-starter.git
+cd react-antd-login-starter
+npm install
+npm start
+```
+
 #### This is template app which has following things included
 
 * Login/Signup pages
