@@ -1,26 +1,17 @@
-import { LockTwoTone, MailTwoTone, SmileTwoTone } from "@ant-design/icons";
+import { LockOutlined, MailOutlined, SmileOutlined } from "@ant-design/icons";
 import { Button, Form, Input, notification, Typography } from "antd";
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
 import { register } from "../apis/authentication";
 import UnAuthCustomLayout from '../components/layout/UnAuthCustomLayout';
 
+
 const { Title } = Typography;
 
 const Register = (props) => {
-  const [email, setLocalEmail] = useState("");
-  const [name, setLocalName] = useState("");
-  const [password, setPassword] = useState("");
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-    const registerRequest = {
-      "email": email,
-      "password": password,
-      "name": name
-    };
-
-    register(registerRequest)
+  const onFinish = (values) => {
+    delete values.confirmPassword;
+    register(values)
       .then(response => {
         notification.success({
           message: 'React Login Starter',
@@ -33,7 +24,10 @@ const Register = (props) => {
           description: error.message || 'Sorry! Something went wrong. Please try again!'
         });
       });
+  };
 
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
   };
 
   return (
@@ -41,9 +35,8 @@ const Register = (props) => {
       <Title level={4}>Create Account</Title>
       <Form
         name="normal_signup"
-        initialValues={{
-          remember: true,
-        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
       >
         <Form.Item
           name="name"
@@ -55,9 +48,8 @@ const Register = (props) => {
           ]}
         >
           <Input
-            prefix={<SmileTwoTone className="site-form-item-icon" />}
+            prefix={<SmileOutlined className="site-form-item-icon" />}
             placeholder="Your Name"
-            onChange={(e) => setLocalName(e.target.value)}
           />
         </Form.Item>
         <Form.Item
@@ -72,9 +64,8 @@ const Register = (props) => {
           hasFeedback
         >
           <Input
-            prefix={<MailTwoTone className="site-form-item-icon" />}
+            prefix={<MailOutlined className="site-form-item-icon" />}
             placeholder="yourmail@domain.com"
-            onChange={(e) => setLocalEmail(e.target.value)}
           />
         </Form.Item>
         <Form.Item
@@ -88,13 +79,13 @@ const Register = (props) => {
           hasFeedback
         >
           <Input.Password
-            prefix={<LockTwoTone className="site-form-item-icon" />}
+            prefix={<LockOutlined className="site-form-item-icon" />}
             placeholder="Password"
           />
         </Form.Item>
 
         <Form.Item
-          name="confirm"
+          name="confirmPassword"
           dependencies={["password"]}
           hasFeedback
           rules={[
@@ -115,16 +106,15 @@ const Register = (props) => {
           ]}
         >
           <Input.Password
-            prefix={<LockTwoTone className="site-form-item-icon" />}
+            prefix={<LockOutlined className="site-form-item-icon" />}
             placeholder="Confirm Password"
-            onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Item>
         <Form.Item>
-          <Button type={"primary"} onClick={onSubmit} block>
+          <Button type={"primary"} htmlType="submit" block>
             Create Account
-              </Button>
-              Already have an account? <Link to="/login">Log in</Link>
+          </Button>
+          Already have an account? <Link to="/login">Log in</Link>
         </Form.Item>
       </Form>
     </UnAuthCustomLayout>
